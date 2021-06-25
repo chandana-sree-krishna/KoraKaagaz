@@ -151,7 +151,7 @@ public class CanvasController implements Initializable{
     private ComboBox<String> rotateButton;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker colorPicker = new ColorPicker(Color.color(0.0,1.0,1.0));
 
 
     /**
@@ -876,6 +876,10 @@ public class CanvasController implements Initializable{
 	    			LogLevel.INFO,
 	    			"Rotate cannot be performed: Not in Cursor Mode"
 	    		);
+	    		//Clearing any selection made
+                rotateButton.getSelectionModel().clearSelection();
+                //Setting the default value to be shown as "Select Angle"
+                rotateButton.setValue("Select Angle");
 	    		return;
 	    	}
 
@@ -886,6 +890,11 @@ public class CanvasController implements Initializable{
 	    			LogLevel.INFO,
 	    			"Rotation cannot be performed: No object Selected"
 	    		);
+	    		
+	    		//Clearing any selection made
+                rotateButton.getSelectionModel().clearSelection();
+                //Setting the default value to be shown as "Select Angle"
+                rotateButton.setValue("Select Angle");
 	    		return;
 	    	}
 
@@ -924,6 +933,16 @@ public class CanvasController implements Initializable{
 
 			// Unselect currently selected object
 	    	updateSelectedPixels(null);
+	    	
+	    	/* Clearing the selection made while choosing the angle of rotation:
+            This is done because same angles were not being able to select consecutively.
+            Eg: After rotating an object by 90deg,
+                it was not possible to rotate 90deg again consecutively.
+                Another angle was supposed to be selected after 90deg rotation and then rotated*/
+         rotateButton.getSelectionModel().clearSelection();
+         
+         //Setting the default value to be shown as "Select Angle"
+         rotateButton.setValue("Select Angle"); 
     	}
     }
 
@@ -1285,11 +1304,12 @@ public class CanvasController implements Initializable{
 			}		
 	});
 
+		
 
 		// Add drop down angles to the rotate Button ComboBox
 		rotateButton
 			.getItems()
-			.addAll("90", "180", "270");
+			.addAll("Select Angle", "90", "180", "270");
 
 		//Grapics context object for updating pixels
 		gcForUpdate = canvasF.getGraphicsContext2D();
