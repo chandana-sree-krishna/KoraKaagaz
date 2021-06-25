@@ -947,7 +947,7 @@ public class CanvasController implements Initializable{
     }
 
     /** Selected Object's pixels would be made into this color */
-    private final static Color HIGHLIGHT_COLOR = Color.color(0.0, 1.0, 1.0);
+    private static Color HIGHLIGHT_COLOR = Color.color(0.0, 1.0, 1.0);
 
     /**
      * Updates the Selected Pixels by highlighting them, and replaces
@@ -971,6 +971,21 @@ public class CanvasController implements Initializable{
     		// and write highlighted object pixels to canvas
     		isObjectSelected = true;
     		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
+    		
+    		Pixel fp = selPrevPixels.get(0);
+    		double r = fp.intensity.r;
+    		double g = fp.intensity.g;
+    		double b = fp.intensity.b;
+    		
+    		double rr = Math.round((r/255.0)*10)/10.0;
+    		double rg = Math.round((g/255.0)*10)/10.0;
+    		double rb = Math.round((b/255.0)*10)/10.0;
+    		
+    		Color objColor = Color.color(rr,rg,rb);
+    		
+    		if(objColor.equals(HIGHLIGHT_COLOR)) {
+    			HIGHLIGHT_COLOR = Color.color((255.0 - r)/255.0, (255.0 - g)/255, (255.0 - b)/255.0);
+    		}
 
     		// Highlight currently selected pixels
     		for(Pixel pixel : selectedPixels) {
